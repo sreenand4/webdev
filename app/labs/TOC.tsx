@@ -8,7 +8,7 @@ export default function TOC() {
       <li><Link href="/labs/lab2" id="wd-lab2-link">Lab 2</Link></li>
       <li><Link href="/labs/lab3" id="wd-lab3-link">Lab 3</Link></li>
       <li><Link href="/" id="wd-kambaz-link">Kambaz</Link></li>
-      <li><a href="https://github.com/sreenand4/webdev-a1" id="wd-github" target="_blank">GitHub</a></li>
+      <li><a href="https://github.com/sreenand4/webdev" id="wd-github" target="_blank">GitHub</a></li>
     </ul>
   );
 }
