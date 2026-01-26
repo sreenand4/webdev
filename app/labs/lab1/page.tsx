@@ -219,9 +219,9 @@ tag to tell browsers to render the gaps.
       <div id="wd-anchor-tag">
         <h4>Anchor tag</h4>
         Please
-        <a href="https://www.lipsum.com" id="wd-lipsum">click here</a>
+        <a href="https://www.lipsum.com" id="wd-lipsum"> click here </a>
         to get dummy text<br />
-        <a href="https://github.com/jannunzi/kambaz-next-js" id="wd-github">GitHub Repository</a>
+        <a href="https://github.com/sreenand4/webdev/tree/main" id="wd-github">GitHub Repository</a>
       </div>
     </div>
   );
