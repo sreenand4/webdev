@@ -1,0 +1,39 @@
+/* Main Content Offset */
+@media (min-width: 768px) {
+    .wd-main-content-offset {
+        margin-left: 120px;
+        /* Use margin instead of padding to avoid background bleed */
+        padding-left: 20px;
+        /* Internal spacing */
+    }
+}
+
+/* Course Navigation Active State */
+.list-group.wd>.list-group-item.active {
+    color: black;
+    background-color: white;
+    border-left: 3px solid black !important;
+}
+
+/* Module Controls Secondary Button Override */
+.btn-secondary {
+    --bs-btn-color: #000 !important;
+    --bs-btn-bg: #c7cdd1 !important;
+    --bs-btn-border-color: #c7cdd1 !important;
+    --bs-btn-hover-color: #fff !important;
+}
+
+/* Module Header Background */
+.bg-secondary {
+    --bs-secondary-rgb: 199, 205, 209;
+}
+
+/* List Group Border */
+.list-group-item {
+    --bs-list-group-border-color: gray;
+}
+
+/* Lesson Green Left Border */
+.wd-lesson {
+    border-left: 3px solid green !important;
+}
