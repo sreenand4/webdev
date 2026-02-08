@@ -4,16 +4,14 @@ import AccountNavigation from "./Navigation";
 export default function AccountLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <div id="wd-account-layout">
-      <table>
-        <tbody>
-          <tr>
-            <td valign="top">
-              <AccountNavigation />
-            </td>
-            <td valign="top">{children}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="d-flex">
+        <div className="d-none d-md-block">
+          <AccountNavigation />
+        </div>
+        <div className="flex-fill p-4 pt-0">
+          {children}
+        </div>
+      </div>
     </div>
   );
 }
