@@ -1,14 +1,27 @@
+"use client";
+import { Nav } from "react-bootstrap";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 
 export default function TOC() {
+  const pathname = usePathname();
   return (
-    <ul>
-      <li><Link href="/labs" id="wd-home-link">Home</Link></li>
-      <li><Link href="/labs/lab1" id="wd-lab1-link">Lab 1</Link></li>
-      <li><Link href="/labs/lab2" id="wd-lab2-link">Lab 2</Link></li>
-      <li><Link href="/labs/lab3" id="wd-lab3-link">Lab 3</Link></li>
-      <li><Link href="/" id="wd-kambaz-link">Kambaz</Link></li>
-      <li><a href="https://github.com/sreenand4/webdev" id="wd-github" target="_blank">GitHub</a></li>
-    </ul>
+    <Nav variant="pills" className="flex-column" activeKey={pathname}>
+      <Nav.Item>
+        <Nav.Link as={Link} href="/labs/lab1" eventKey="/labs/lab1">Lab 1</Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link as={Link} href="/labs/lab2" eventKey="/labs/lab2">Lab 2</Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link as={Link} href="/labs/lab3" eventKey="/labs/lab3">Lab 3</Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link as={Link} href="/" eventKey="/">Kambaz</Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link href="https://github.com/sreenand4/webdev">My GitHub</Nav.Link>
+      </Nav.Item>
+    </Nav>
   );
 }
