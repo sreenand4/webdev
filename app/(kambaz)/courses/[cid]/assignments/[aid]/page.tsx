@@ -1,22 +1,26 @@
 "use client";
-import { Form, Button, Row, Col, Card } from "react-bootstrap";
+import { Form, Button, Row, Col } from "react-bootstrap";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { assignments } from "../../../database";
 
 export default function AssignmentEditor() {
     const { cid, aid } = useParams();
+    const assignment = assignments.find((a: any) => a._id === aid);
+
+    if (!assignment) return <div>Assignment not found</div>;
+
   return (
     <div id="wd-assignments-editor" className="p-3">
         <div className="d-flex justify-content-between align-items-center mb-3">
             <h4 className="m-0">Assignment Name</h4>
         </div>
       <Form.Group className="mb-3" controlId="wd-name">
-         {/* <Form.Label>Assignment Name</Form.Label> - Instructions usually imply label, but UI figure might show just the input or label clearly. I'll add label for accessibility/standard. */}
-        <Form.Control type="text" defaultValue="A1 - ENV + HTML" className="mb-3" />
+        <Form.Control type="text" defaultValue={assignment.title} className="mb-3" />
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="wd-description">
-        <Form.Control as="textarea" rows={3} defaultValue="The assignment is available online Submit a link to the landing page of" />
+        <Form.Control as="textarea" rows={3} defaultValue={assignment.description} />
       </Form.Group>
 
       <Row className="mb-3">
@@ -24,7 +28,7 @@ export default function AssignmentEditor() {
             <Form.Label htmlFor="wd-points">Points</Form.Label>
         </Col>
         <Col md={9}>
-            <Form.Control type="number" id="wd-points" defaultValue={100} />
+            <Form.Control type="number" id="wd-points" defaultValue={assignment.points} />
         </Col>
       </Row>
 
@@ -89,20 +93,20 @@ export default function AssignmentEditor() {
 
                 <Form.Group className="mb-3" controlId="wd-due-date">
                      <Form.Label className="fw-bold">Due</Form.Label>
-                     <Form.Control type="date" defaultValue="2024-05-13" />
+                     <Form.Control type="date" defaultValue={assignment.dueDate} />
                 </Form.Group>
 
                 <Row>
                     <Col md={6}>
                         <Form.Group className="mb-3" controlId="wd-available-from">
                             <Form.Label className="fw-bold">Available from</Form.Label>
-                            <Form.Control type="date" defaultValue="2024-05-06" />
+                            <Form.Control type="date" defaultValue={assignment.availableFrom} />
                         </Form.Group>
                     </Col>
                     <Col md={6}>
                          <Form.Group className="mb-3" controlId="wd-available-until">
                             <Form.Label className="fw-bold">Until</Form.Label>
-                            <Form.Control type="date" defaultValue="2024-05-20" />
+                            <Form.Control type="date" defaultValue={assignment.availableUntil} />
                         </Form.Group>
                     </Col>
                 </Row>

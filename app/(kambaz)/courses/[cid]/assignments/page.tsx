@@ -5,9 +5,11 @@ import { FaMagnifyingGlass } from "react-icons/fa6";
 import { ListGroup, Button, Form, InputGroup } from "react-bootstrap";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import * as db from "../../../database";
 
 export default function Assignments() {
   const { cid } = useParams();
+  const assignments = db.assignments;
   return (
     <div id="wd-assignments">
       <div className="d-flex justify-content-between align-items-center mb-4">
@@ -40,64 +42,29 @@ export default function Assignments() {
       </div>
 
       <ListGroup className="rounded-0 rounded-bottom">
-        <ListGroup.Item className="wd-assignment-list-item p-3 ps-1 border-start border-success border-5">
-          <div className="d-flex align-items-center">
-            <BsGripVertical className="me-2 fs-3 text-secondary" />
-             <div className="flex-grow-1">
-               <Link href={`/courses/${cid}/assignments/123`} className="wd-assignment-link text-black text-decoration-none fw-bold">
-                 A1 - ENV + HTML
-               </Link>
-               <br />
-               <span className="text-secondary" style={{ fontSize: "14px" }}>
-                 <span className="text-danger">Multiple Modules</span> | 
-                 <strong> Not available until</strong> May 6 at 12:00am | 
-                 <strong> Due</strong> May 13 at 11:59pm | 100 pts
-               </span>
-             </div>
-             <BsCheckCircleFill className="text-success fs-4 me-3" />
-             <IoEllipsisVertical className="fs-4" />
-          </div>
-        </ListGroup.Item>
-
-        <ListGroup.Item className="wd-assignment-list-item p-3 ps-1 border-start border-success border-5">
-           <div className="d-flex align-items-center">
-            <BsGripVertical className="me-2 fs-3 text-secondary" />
-             <div className="flex-grow-1">
-               <Link href={`/courses/${cid}/assignments/124`} className="wd-assignment-link text-black text-decoration-none fw-bold">
-                 A2 - CSS + BOOTSTRAP
-               </Link>
-               <br />
-               <span className="text-secondary" style={{ fontSize: "14px" }}>
-                 <span className="text-danger">Multiple Modules</span> | 
-                 <strong> Not available until</strong> May 13 at 12:00am | 
-                 <strong> Due</strong> May 20 at 11:59pm | 100 pts
-               </span>
-             </div>
-             <BsCheckCircleFill className="text-success fs-4 me-3" />
-             <IoEllipsisVertical className="fs-4" />
-          </div>
-        </ListGroup.Item>
-
-        <ListGroup.Item className="wd-assignment-list-item p-3 ps-1 border-start border-success border-5">
-           <div className="d-flex align-items-center">
-            <BsGripVertical className="me-2 fs-3 text-secondary" />
-             <div className="flex-grow-1">
-               <Link href={`/courses/${cid}/assignments/125`} className="wd-assignment-link text-black text-decoration-none fw-bold">
-                 A3 - JAVASCRIPT + REACT
-               </Link>
-               <br />
-               <span className="text-secondary" style={{ fontSize: "14px" }}>
-                 <span className="text-danger">Multiple Modules</span> | 
-                 <strong> Not available until</strong> May 20 at 12:00am | 
-                 <strong> Due</strong> May 27 at 11:59pm | 100 pts
-               </span>
-             </div>
-             <BsCheckCircleFill className="text-success fs-4 me-3" />
-             <IoEllipsisVertical className="fs-4" />
-          </div>
-        </ListGroup.Item>
+        {assignments
+          .filter((assignment: any) => assignment.course === cid)
+          .map((assignment: any) => (
+          <ListGroup.Item key={assignment._id} className="wd-assignment-list-item p-3 ps-1 border-start border-success border-5">
+            <div className="d-flex align-items-center">
+              <BsGripVertical className="me-2 fs-3 text-secondary" />
+               <div className="flex-grow-1">
+                 <Link href={`/courses/${cid}/assignments/${assignment._id}`} className="wd-assignment-link text-black text-decoration-none fw-bold">
+                   {assignment.title}
+                 </Link>
+                 <br />
+                 <span className="text-secondary" style={{ fontSize: "14px" }}>
+                   <span className="text-danger">Multiple Modules</span> | 
+                   <strong> Not available until</strong> {assignment.availableFrom} | 
+                   <strong> Due</strong> {assignment.dueDate} | {assignment.points} pts
+                 </span>
+               </div>
+               <BsCheckCircleFill className="text-success fs-4 me-3" />
+               <IoEllipsisVertical className="fs-4" />
+            </div>
+          </ListGroup.Item>
+        ))}
       </ListGroup>
     </div>
   );
 }
-
