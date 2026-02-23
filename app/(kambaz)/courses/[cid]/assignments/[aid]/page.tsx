@@ -2,7 +2,7 @@
 import { Form, Button, Row, Col } from "react-bootstrap";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { assignments } from "../../../database";
+import { assignments } from "../../../../database";
 
 export default function AssignmentEditor() {
     const { cid, aid } = useParams();

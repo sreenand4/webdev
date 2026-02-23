@@ -2,7 +2,7 @@
 import { FaUserCircle } from "react-icons/fa";
 import { Table } from "react-bootstrap";
 import { useParams } from "next/navigation";
-import { users, enrollments } from "../../../database";
+import { users, enrollments } from "../../../../database";
 
 export default function PeopleTable() {
     const { cid } = useParams();
