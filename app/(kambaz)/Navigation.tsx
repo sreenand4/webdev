@@ -12,8 +12,8 @@ export default function KambazNavigation() {
   const links = [
     { label: "Dashboard", path: "/dashboard", icon: AiOutlineDashboard },
     { label: "Courses",   path: "/dashboard", icon: LiaBookSolid },
-    { label: "Calendar",  path: "/Calendar",  icon: IoCalendarOutline },
-    { label: "Inbox",     path: "/Inbox",     icon: FaInbox },
+    { label: "Calendar",  path: "/calendar",  icon: IoCalendarOutline },
+    { label: "Inbox",     path: "/inbox",     icon: FaInbox },
     { label: "Labs",      path: "/labs",             icon: LiaCogSolid },
   ];
   return (
@@ -24,16 +24,16 @@ export default function KambazNavigation() {
         <img src="/images/NEU.png" width="75px" /></ListGroupItem>
       <ListGroupItem as={Link} href="/account"
         className={`text-center border-0 bg-black
-            ${pathname.includes("Account") ? "bg-white text-danger" : "bg-black text-white"}`}>
+            ${pathname.toLowerCase().includes("account") ? "bg-white text-danger" : "bg-black text-white"}`}>
         <FaRegCircleUser
-          className={`fs-1 ${pathname.includes("Account") ? "text-danger" : "text-white"}`} />
+          className={`fs-1 ${pathname.toLowerCase().includes("account") ? "text-danger" : "text-white"}`} />
         <br />
         Account
       </ListGroupItem>
       {links.map((link) => (
-        <ListGroupItem key={link.path} as={Link} href={link.path}
+        <ListGroupItem key={link.label} as={Link} href={link.path}
           className={`bg-black text-center border-0
-            ${pathname.includes(link.label) ? "text-danger bg-white":"text-white bg-black"}`}>
+            ${pathname.toLowerCase().includes(link.label.toLowerCase()) ? "text-danger bg-white":"text-white bg-black"}`}>
           {link.icon({ className: "fs-1 text-danger"})}
           <br />
           {link.label}

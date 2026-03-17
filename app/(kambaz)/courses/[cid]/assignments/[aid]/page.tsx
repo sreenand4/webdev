@@ -1,14 +1,40 @@
 "use client";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import { assignments } from "../../../../database";
+import { useParams, useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../../store";
+import { addAssignment, updateAssignment } from "../reducer";
+import { useState } from "react";
 
 export default function AssignmentEditor() {
     const { cid, aid } = useParams();
-    const assignment = assignments.find((a: any) => a._id === aid);
+    const { assignments } = useSelector((state: RootState) => state.assignmentsReducer);
+    const existingAssignment = assignments.find((a: any) => a._id === aid);
+    const isNew = aid === "new";
 
-    if (!assignment) return <div>Assignment not found</div>;
+    const [assignment, setAssignment] = useState<any>(
+        existingAssignment || {
+            title: "New Assignment",
+            description: "New Description",
+            points: 100,
+            dueDate: "",
+            availableFrom: "",
+            availableUntil: ""
+        }
+    );
+
+    const dispatch = useDispatch();
+    const router = useRouter();
+
+    const handleSave = () => {
+        if (isNew) {
+            dispatch(addAssignment({ ...assignment, course: cid }));
+        } else {
+            dispatch(updateAssignment(assignment));
+        }
+        router.push(`/courses/${cid}/assignments`);
+    };
 
   return (
     <div id="wd-assignments-editor" className="p-3">
@@ -16,11 +42,11 @@ export default function AssignmentEditor() {
             <h4 className="m-0">Assignment Name</h4>
         </div>
       <Form.Group className="mb-3" controlId="wd-name">
-        <Form.Control type="text" defaultValue={assignment.title} className="mb-3" />
+        <Form.Control type="text" value={assignment.title} onChange={(e) => setAssignment({...assignment, title: e.target.value})} className="mb-3" />
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="wd-description">
-        <Form.Control as="textarea" rows={3} defaultValue={assignment.description} />
+        <Form.Control as="textarea" rows={3} value={assignment.description} onChange={(e) => setAssignment({...assignment, description: e.target.value})} />
       </Form.Group>
 
       <Row className="mb-3">
@@ -28,7 +54,7 @@ export default function AssignmentEditor() {
             <Form.Label htmlFor="wd-points">Points</Form.Label>
         </Col>
         <Col md={9}>
-            <Form.Control type="number" id="wd-points" defaultValue={assignment.points} />
+            <Form.Control type="number" id="wd-points" value={assignment.points} onChange={(e) => setAssignment({...assignment, points: parseInt(e.target.value)})} />
         </Col>
       </Row>
 
@@ -37,7 +63,7 @@ export default function AssignmentEditor() {
             <Form.Label htmlFor="wd-group">Assignment Group</Form.Label>
         </Col>
         <Col md={9}>
-           <Form.Select id="wd-group">
+           <Form.Select id="wd-group" defaultValue="ASSIGNMENTS">
                 <option value="ASSIGNMENTS">ASSIGNMENTS</option>
                 <option value="QUIZZES">QUIZZES</option>
                 <option value="EXAMS">EXAMS</option>
@@ -51,7 +77,7 @@ export default function AssignmentEditor() {
              <Form.Label htmlFor="wd-display-grade-as">Display Grade as</Form.Label>
         </Col>
         <Col md={9}>
-            <Form.Select id="wd-display-grade-as">
+            <Form.Select id="wd-display-grade-as" defaultValue="Percentage">
                 <option value="Percentage">Percentage</option>
                 <option value="Points">Points</option>
             </Form.Select>
@@ -64,7 +90,7 @@ export default function AssignmentEditor() {
         </Col>
         <Col md={9}>
             <div className="border p-3 rounded">
-                <Form.Select id="wd-submission-type" className="mb-3">
+                <Form.Select id="wd-submission-type" className="mb-3" defaultValue="Online">
                     <option value="Online">Online</option>
                     <option value="Paper">Paper</option>
                 </Form.Select>
@@ -93,20 +119,20 @@ export default function AssignmentEditor() {
 
                 <Form.Group className="mb-3" controlId="wd-due-date">
                      <Form.Label className="fw-bold">Due</Form.Label>
-                     <Form.Control type="date" defaultValue={assignment.dueDate} />
+                     <Form.Control type="date" value={assignment.dueDate} onChange={(e) => setAssignment({...assignment, dueDate: e.target.value})} />
                 </Form.Group>
 
                 <Row>
                     <Col md={6}>
                         <Form.Group className="mb-3" controlId="wd-available-from">
                             <Form.Label className="fw-bold">Available from</Form.Label>
-                            <Form.Control type="date" defaultValue={assignment.availableFrom} />
+                            <Form.Control type="date" value={assignment.availableFrom} onChange={(e) => setAssignment({...assignment, availableFrom: e.target.value})} />
                         </Form.Group>
                     </Col>
                     <Col md={6}>
                          <Form.Group className="mb-3" controlId="wd-available-until">
                             <Form.Label className="fw-bold">Until</Form.Label>
-                            <Form.Control type="date" defaultValue={assignment.availableUntil} />
+                            <Form.Control type="date" value={assignment.availableUntil} onChange={(e) => setAssignment({...assignment, availableUntil: e.target.value})} />
                         </Form.Group>
                     </Col>
                 </Row>
@@ -116,7 +142,7 @@ export default function AssignmentEditor() {
       <hr />
       <div className="d-flex justify-content-end">
          <Link href={`/courses/${cid}/assignments`} className="btn btn-secondary me-2">Cancel</Link>
-         <Link href={`/courses/${cid}/assignments`} className="btn btn-danger">Save</Link>
+         <Button onClick={handleSave} className="btn btn-danger">Save</Button>
       </div>
     </div>
   );

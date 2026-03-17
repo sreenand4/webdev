@@ -2,14 +2,27 @@
 import { BsGripVertical, BsPlus, BsCheckCircleFill } from "react-icons/bs";
 import { IoEllipsisVertical } from "react-icons/io5";
 import { FaMagnifyingGlass } from "react-icons/fa6";
-import { ListGroup, Button, Form, InputGroup } from "react-bootstrap";
+import { ListGroup, Button, Form, InputGroup, Modal } from "react-bootstrap";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import * as db from "../../../database";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../store";
+import { deleteAssignment } from "./reducer";
+import { FaTrash } from "react-icons/fa";
+import { useState } from "react";
 
 export default function Assignments() {
   const { cid } = useParams();
-  const assignments = db.assignments;
+  const { assignments } = useSelector((state: RootState) => state.assignmentsReducer);
+  const dispatch = useDispatch();
+  const [showModal, setShowModal] = useState(false);
+  const [toDelete, setToDelete] = useState("");
+  const deleteHandler = () => {
+    dispatch(deleteAssignment(toDelete));
+    setShowModal(false);
+  };
+
   return (
     <div id="wd-assignments">
       <div className="d-flex justify-content-between align-items-center mb-4">
@@ -60,11 +73,27 @@ export default function Assignments() {
                  </span>
                </div>
                <BsCheckCircleFill className="text-success fs-4 me-3" />
+               <FaTrash className="text-danger me-3" style={{ cursor: "pointer" }} onClick={() => { setToDelete(assignment._id); setShowModal(true); }} />
                <IoEllipsisVertical className="fs-4" />
             </div>
           </ListGroup.Item>
         ))}
       </ListGroup>
+
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Delete Assignment</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to delete this assignment?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Close
+          </Button>
+          <Button variant="danger" onClick={deleteHandler}>
+            Confirm Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }

@@ -1,10 +1,16 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+body * {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
 /* Main Content Offset */
 @media (min-width: 768px) {
-    .wd-main-content-offset {
-        margin-left: 120px;
-        /* Use margin instead of padding to avoid background bleed */
-        padding-left: 20px;
-        /* Internal spacing */
+    #wd-kambaz .wd-main-content-offset {
+        padding-left: 140px !important;
     }
 }
 
