@@ -1,5 +1,8 @@
+export const dynamic = "force-dynamic";
+
 "use client";
 import { useSearchParams } from "next/navigation";
+
 export default function QueryCalculator() {
  const searchParams = useSearchParams();
  const aRaw = searchParams.get("a") || "0";
