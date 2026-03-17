@@ -8,9 +8,9 @@ export default function ZustandTodoList() {
   );
 
   return (
-    <div id="wd-todo-list-zustand">
-      <h2>Todo List (Zustand)</h2>
-      <ListGroup className="w-50">
+    <div id="wd-todo-list-zustand" className="mt-4">
+      <h2 className="mb-3">Todo List (Zustand)</h2>
+      <ListGroup className="w-75">
         <ListGroupItem className="d-flex align-items-center">
           <Button onClick={addTodo} id="wd-add-todo-zustand-click" className="btn btn-success me-2">
             Add

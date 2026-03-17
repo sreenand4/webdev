@@ -6,9 +6,9 @@ export default function ReactContextTodoList() {
   const { todos, todo, setTodo, addTodo, deleteTodo, updateTodo } = useTodos();
 
   return (
-    <div id="wd-todo-list-context">
-      <h2>Todo List (Context)</h2>
-      <ListGroup className="w-50">
+    <div id="wd-todo-list-context" className="mt-4">
+      <h2 className="mb-3">Todo List (Context)</h2>
+      <ListGroup className="w-75">
         <ListGroupItem className="d-flex align-items-center">
           <Button onClick={addTodo} id="wd-add-todo-click" className="btn btn-success me-2">
             Add

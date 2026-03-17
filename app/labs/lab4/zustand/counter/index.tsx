@@ -7,9 +7,9 @@ export default function ZustandCounter() {
    (state) => state,
  );
 
- return (
-   <div id="wd-zustand-counter" className="m-2">
-     <h2>Zustand Counter</h2>
+  return (
+   <div id="wd-zustand-counter" className="mb-4">
+     <h2 className="mb-3">Zustand Counter</h2>
      <h3>Count: {count}</h3>
      <Button onClick={() => increase(1)} className="btn btn-success me-2">Increase</Button>
      <Button onClick={() => decrease(1)} className="btn btn-danger me-2">Decrease</Button>
