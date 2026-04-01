@@ -18,6 +18,9 @@ export default function Labs() {
           <Link href="/labs/lab4" id="wd-lab4-link">Lab 4: State Management & URL Encoding </Link>
         </li>
         <li>
+          <Link href="/labs/lab5" id="wd-lab5-link">Lab 5: Express and REST APIs </Link>
+        </li>
+        <li>
           <Link href="/" id="wd-kambaz-link">Kambaz</Link>
         </li>
       </ul>

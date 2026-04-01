@@ -5,7 +5,8 @@ import { useParams, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 import { addAssignment, updateAssignment } from "../reducer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import * as client from "../client";
 
 export default function AssignmentEditor() {
     const { cid, aid } = useParams();
@@ -27,14 +28,30 @@ export default function AssignmentEditor() {
     const dispatch = useDispatch();
     const router = useRouter();
 
-    const handleSave = () => {
+    const handleSave = async () => {
         if (isNew) {
-            dispatch(addAssignment({ ...assignment, course: cid }));
+            const newAssignment = await client.createAssignmentForCourse(
+              cid as string,
+              assignment
+            );
+            dispatch(addAssignment(newAssignment));
         } else {
-            dispatch(updateAssignment(assignment));
+            const updatedAssignment = await client.updateAssignment(assignment);
+            dispatch(updateAssignment(updatedAssignment));
         }
         router.push(`/courses/${cid}/assignments`);
     };
+    useEffect(() => {
+      if (!isNew && !existingAssignment && aid) {
+        const fetchAssignment = async () => {
+          const foundAssignment = await client.findAssignmentById(aid as string);
+          if (foundAssignment) {
+            setAssignment(foundAssignment);
+          }
+        };
+        fetchAssignment();
+      }
+    }, [aid, isNew, existingAssignment]);
 
   return (
     <div id="wd-assignments-editor" className="p-3">

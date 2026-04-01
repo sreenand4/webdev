@@ -4,14 +4,20 @@ import { AiOutlineDashboard } from "react-icons/ai";
 import { IoCalendarOutline } from "react-icons/io5";
 import { LiaBookSolid, LiaCogSolid } from "react-icons/lia";
 import { FaInbox, FaRegCircleUser } from "react-icons/fa6";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import Link from "next/link";
 
 export default function KambazNavigation() {
   const pathname = usePathname();
+  const params = useParams();
+  const cid = typeof params?.cid === "string" ? params.cid : undefined;
   const links = [
     { label: "Dashboard", path: "/dashboard", icon: AiOutlineDashboard },
-    { label: "Courses",   path: "/dashboard", icon: LiaBookSolid },
+    {
+      label: "Courses",
+      path: cid ? `/courses/${cid}/home` : "/dashboard",
+      icon: LiaBookSolid,
+    },
     { label: "Calendar",  path: "/calendar",  icon: IoCalendarOutline },
     { label: "Inbox",     path: "/inbox",     icon: FaInbox },
     { label: "Labs",      path: "/labs",             icon: LiaCogSolid },

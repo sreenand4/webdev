@@ -13,7 +13,7 @@ export default function ModulesControls(
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   return (
-    <div id="wd-modules-controls" className="text-nowrap">
+    <div id="wd-modules-controls" className="text-nowrap clearfix mb-3">
       <Button id="wd-add-module-btn" variant="danger" size="lg" className="me-1 float-end" onClick={handleShow}>
         <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
         Module

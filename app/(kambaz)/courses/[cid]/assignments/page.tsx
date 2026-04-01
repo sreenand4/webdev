@@ -5,12 +5,12 @@ import { FaMagnifyingGlass } from "react-icons/fa6";
 import { ListGroup, Button, Form, InputGroup, Modal } from "react-bootstrap";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import * as db from "../../../database";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store";
-import { deleteAssignment } from "./reducer";
-import { FaTrash } from "react-icons/fa";
-import { useState } from "react";
+import { deleteAssignment, setAssignments } from "./reducer";
+import { FaPlus, FaTrash } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import * as client from "./client";
 
 export default function Assignments() {
   const { cid } = useParams();
@@ -18,10 +18,18 @@ export default function Assignments() {
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
   const [toDelete, setToDelete] = useState("");
-  const deleteHandler = () => {
+  const fetchAssignments = async () => {
+    const assignments = await client.findAssignmentsForCourse(cid as string);
+    dispatch(setAssignments(assignments));
+  };
+  const deleteHandler = async () => {
+    await client.deleteAssignment(toDelete);
     dispatch(deleteAssignment(toDelete));
     setShowModal(false);
   };
+  useEffect(() => {
+    fetchAssignments();
+  }, [cid]);
 
   return (
     <div id="wd-assignments">
@@ -36,9 +44,13 @@ export default function Assignments() {
           <Button variant="secondary" className="me-1" id="wd-add-assignment-group">
             <BsPlus className="fs-4" /> Group
           </Button>
-          <Button variant="danger" id="wd-add-assignment">
-             <BsPlus className="fs-4" /> Assignment
-          </Button>
+          <Link
+            href={`/courses/${cid}/assignments/new`}
+            className="btn btn-danger"
+            id="wd-add-assignment"
+          >
+             <FaPlus className="fs-6 mb-1 me-1" /> Assignment
+          </Link>
         </div>
       </div>
 
