@@ -29,5 +29,15 @@ export default function TOC() {
          Kambaz </NavLink> </NavItem>
      <NavItem>
        <NavLink id="wd-github" href="https://github.com/sreenand4/webdev">My GitHub</NavLink></NavItem>
+     <NavItem>
+       <NavLink id="wd-backend-github" href="https://github.com/sreenand4/webdev-backend">
+         Node Server GitHub
+       </NavLink>
+     </NavItem>
+     <NavItem>
+       <NavLink id="wd-render-server" href="https://webdev-backend-rru9.onrender.com">
+         Render Server
+       </NavLink>
+     </NavItem>
    </Nav>
  );}
