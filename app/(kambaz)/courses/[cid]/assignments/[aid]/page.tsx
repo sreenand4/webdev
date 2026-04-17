@@ -11,6 +11,8 @@ import * as client from "../client";
 export default function AssignmentEditor() {
     const { cid, aid } = useParams();
     const { assignments } = useSelector((state: RootState) => state.assignmentsReducer);
+    const { currentUser } = useSelector((state: RootState) => state.accountReducer);
+    const isFaculty = currentUser?.role === "FACULTY";
     const existingAssignment = assignments.find((a: any) => a._id === aid);
     const isNew = aid === "new";
 
@@ -59,11 +61,11 @@ export default function AssignmentEditor() {
             <h4 className="m-0">Assignment Name</h4>
         </div>
       <Form.Group className="mb-3" controlId="wd-name">
-        <Form.Control type="text" value={assignment.title} onChange={(e) => setAssignment({...assignment, title: e.target.value})} className="mb-3" />
+        <Form.Control type="text" value={assignment.title} readOnly={!isFaculty} onChange={(e) => setAssignment({...assignment, title: e.target.value})} className="mb-3" />
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="wd-description">
-        <Form.Control as="textarea" rows={3} value={assignment.description} onChange={(e) => setAssignment({...assignment, description: e.target.value})} />
+        <Form.Control as="textarea" rows={3} value={assignment.description} readOnly={!isFaculty} onChange={(e) => setAssignment({...assignment, description: e.target.value})} />
       </Form.Group>
 
       <Row className="mb-3">
@@ -71,7 +73,7 @@ export default function AssignmentEditor() {
             <Form.Label htmlFor="wd-points">Points</Form.Label>
         </Col>
         <Col md={9}>
-            <Form.Control type="number" id="wd-points" value={assignment.points} onChange={(e) => setAssignment({...assignment, points: parseInt(e.target.value)})} />
+            <Form.Control type="number" id="wd-points" value={assignment.points} readOnly={!isFaculty} onChange={(e) => setAssignment({...assignment, points: parseInt(e.target.value)})} />
         </Col>
       </Row>
 
@@ -136,20 +138,20 @@ export default function AssignmentEditor() {
 
                 <Form.Group className="mb-3" controlId="wd-due-date">
                      <Form.Label className="fw-bold">Due</Form.Label>
-                     <Form.Control type="date" value={assignment.dueDate} onChange={(e) => setAssignment({...assignment, dueDate: e.target.value})} />
+                     <Form.Control type="date" value={assignment.dueDate} readOnly={!isFaculty} onChange={(e) => setAssignment({...assignment, dueDate: e.target.value})} />
                 </Form.Group>
 
                 <Row>
                     <Col md={6}>
                         <Form.Group className="mb-3" controlId="wd-available-from">
                             <Form.Label className="fw-bold">Available from</Form.Label>
-                            <Form.Control type="date" value={assignment.availableFrom} onChange={(e) => setAssignment({...assignment, availableFrom: e.target.value})} />
+                            <Form.Control type="date" value={assignment.availableFrom} readOnly={!isFaculty} onChange={(e) => setAssignment({...assignment, availableFrom: e.target.value})} />
                         </Form.Group>
                     </Col>
                     <Col md={6}>
                          <Form.Group className="mb-3" controlId="wd-available-until">
                             <Form.Label className="fw-bold">Until</Form.Label>
-                            <Form.Control type="date" value={assignment.availableUntil} onChange={(e) => setAssignment({...assignment, availableUntil: e.target.value})} />
+                            <Form.Control type="date" value={assignment.availableUntil} readOnly={!isFaculty} onChange={(e) => setAssignment({...assignment, availableUntil: e.target.value})} />
                         </Form.Group>
                     </Col>
                 </Row>
@@ -158,8 +160,12 @@ export default function AssignmentEditor() {
       </Row>
       <hr />
       <div className="d-flex justify-content-end">
-         <Link href={`/courses/${cid}/assignments`} className="btn btn-secondary me-2">Cancel</Link>
-         <Button onClick={handleSave} className="btn btn-danger">Save</Button>
+         <Link href={`/courses/${cid}/assignments`} className="btn btn-secondary me-2">
+           {isFaculty ? "Cancel" : "Back"}
+         </Link>
+         {isFaculty && (
+           <Button onClick={handleSave} className="btn btn-danger">Save</Button>
+         )}
       </div>
     </div>
   );

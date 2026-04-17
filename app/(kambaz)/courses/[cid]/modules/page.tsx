@@ -18,6 +18,7 @@ import { RootState } from "../../../store";
 export default function Modules() {
   const { cid } = useParams();
   const { modules } = useSelector((state: RootState) => state.modulesReducer);
+  const { currentUser } = useSelector((state: RootState) => state.accountReducer);
   const dispatch = useDispatch();
   const [moduleName, setModuleName] = useState("");
   const fetchModules = async () => {
@@ -32,11 +33,11 @@ export default function Modules() {
     setModuleName("");
   };
   const onRemoveModule = async (moduleId: string) => {
-    await client.deleteModule(moduleId);
+    await client.deleteModule(cid as string, moduleId);
     dispatch(setModules(modules.filter((m: any) => m._id !== moduleId)));
   };
   const onUpdateModule = async (module: any) => {
-    await client.updateModule(module);
+    await client.updateModule(cid as string, module);
     const newModules = modules.map((m: any) =>
       m._id === module._id ? module : m
     );
@@ -48,11 +49,13 @@ export default function Modules() {
 
   return (
     <div id="wd-modules">
-      <ModulesControls
-        setModuleName={setModuleName}
-        moduleName={moduleName}
-        addModule={onCreateModuleForCourse}
-      />
+      {currentUser?.role === "FACULTY" && (
+        <ModulesControls
+          setModuleName={setModuleName}
+          moduleName={moduleName}
+          addModule={onCreateModuleForCourse}
+        />
+      )}
       <br /><br />
       <ul id="wd-modules" className="list-group rounded-0">
         {modules.map((module: any) => (
@@ -70,10 +73,12 @@ export default function Modules() {
                          }}
                          defaultValue={module.name}/>
                 )}
-                <ModuleControlButtons
-                  moduleId={module._id}
-                  deleteModule={(moduleId) => onRemoveModule(moduleId)}
-                  editModule={(moduleId) => dispatch(editModule(moduleId))}/>
+                {currentUser?.role === "FACULTY" && (
+                  <ModuleControlButtons
+                    moduleId={module._id}
+                    deleteModule={(moduleId) => onRemoveModule(moduleId)}
+                    editModule={(moduleId) => dispatch(editModule(moduleId))}/>
+                )}
               </div>
               {module.lessons && (
                 <ul className="wd-lessons list-group rounded-0">
