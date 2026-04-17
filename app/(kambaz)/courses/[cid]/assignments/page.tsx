@@ -15,6 +15,7 @@ import * as client from "./client";
 export default function Assignments() {
   const { cid } = useParams();
   const { assignments } = useSelector((state: RootState) => state.assignmentsReducer);
+  const { currentUser } = useSelector((state: RootState) => state.accountReducer);
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
   const [toDelete, setToDelete] = useState("");
@@ -40,18 +41,20 @@ export default function Assignments() {
           </InputGroup.Text>
           <Form.Control id="wd-search-assignment" placeholder="Search for Assignments"  className="border-start-0" />
         </InputGroup>
-        <div>
-          <Button variant="secondary" className="me-1" id="wd-add-assignment-group">
-            <BsPlus className="fs-4" /> Group
-          </Button>
-          <Link
-            href={`/courses/${cid}/assignments/new`}
-            className="btn btn-danger"
-            id="wd-add-assignment"
-          >
-             <FaPlus className="fs-6 mb-1 me-1" /> Assignment
-          </Link>
-        </div>
+        {currentUser?.role === "FACULTY" && (
+          <div>
+            <Button variant="secondary" className="me-1" id="wd-add-assignment-group">
+              <BsPlus className="fs-4" /> Group
+            </Button>
+            <Link
+              href={`/courses/${cid}/assignments/new`}
+              className="btn btn-danger"
+              id="wd-add-assignment"
+            >
+               <FaPlus className="fs-6 mb-1 me-1" /> Assignment
+            </Link>
+          </div>
+        )}
       </div>
 
       <div className="wd-title p-3 ps-2 bg-secondary fw-bold d-flex justify-content-between align-items-center rounded-top">
@@ -85,7 +88,9 @@ export default function Assignments() {
                  </span>
                </div>
                <BsCheckCircleFill className="text-success fs-4 me-3" />
-               <FaTrash className="text-danger me-3" style={{ cursor: "pointer" }} onClick={() => { setToDelete(assignment._id); setShowModal(true); }} />
+               {currentUser?.role === "FACULTY" && (
+                 <FaTrash className="text-danger me-3" style={{ cursor: "pointer" }} onClick={() => { setToDelete(assignment._id); setShowModal(true); }} />
+               )}
                <IoEllipsisVertical className="fs-4" />
             </div>
           </ListGroup.Item>
